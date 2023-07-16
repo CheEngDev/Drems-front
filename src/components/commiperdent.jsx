@@ -73,7 +73,7 @@ const CommisionPerDent = (props) => {
       </div>
       <div className="flex justify-center text-lg">
         <h2 className="font-semibold">Total Commision</h2>
-        <p className="mx-2">{`Php ${computeTotalcommision()}.00`}</p>
+        <p className="mx-2">{`Php ${computeTotalcommision()}.0`}</p>
       </div>
     </div>
   );
