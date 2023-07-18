@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import moment from "moment";
+import UserContext from "../context/userContext";
 
 const CommisionPerDent = (props) => {
   const associates = props.associates;
   const payments = props.payments;
+  const user = useContext(UserContext).user;
+
   const currentMonth = moment().month() + 1;
   const currentYear = moment().year();
   const currentDay = moment().date();
@@ -46,12 +49,23 @@ const CommisionPerDent = (props) => {
   }
 
   function computeTotalcommision() {
+    const withoutowner = filteredCommi.filter(
+      (commi) => filteredCommi[0].handledby._id !== user._id
+    );
+
     let expenses = 0;
-    for (let i = 0; i < filteredCommi.length; i++) {
-      expenses += filteredCommi[i].treatment.procedure.amount;
+    for (let i = 0; i < withoutowner.length; i++) {
+      expenses += withoutowner[i].treatment.procedure.amount;
     }
     return expenses * 0.1;
   }
+
+  // Format for number to be currency
+  const formatter = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "Php",
+  });
+
   return (
     <div>
       <div className="max-h-[330px] overflow-y-auto">
@@ -64,7 +78,7 @@ const CommisionPerDent = (props) => {
                 {assoc._id === assoc.dentist ? (
                   <p>Clinic Owner</p>
                 ) : (
-                  <p>Php {computecommision(assoc._id)}.00</p>
+                  <p>{formatter.format(computecommision(assoc._id))}</p>
                 )}
               </div>
             </div>
@@ -73,7 +87,7 @@ const CommisionPerDent = (props) => {
       </div>
       <div className="flex justify-center text-lg">
         <h2 className="font-semibold">Total Commision</h2>
-        <p className="mx-2">{`Php ${computeTotalcommision()}.0`}</p>
+        <p className="mx-2">{formatter.format(computeTotalcommision())}</p>
       </div>
     </div>
   );

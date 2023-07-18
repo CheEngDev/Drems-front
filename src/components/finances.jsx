@@ -45,7 +45,6 @@ const Finances = () => {
   const companies = hmocontext.companies;
   console.log(payments);
 
-  // const [payments, setPayments] = useState([
   //   {
   //     id: "1",
   //     pxid: "1",
@@ -193,13 +192,6 @@ const Finances = () => {
   // ]);
 
   const [salaryList, setSalaryList] = useState([]);
-  // Other Expenses
-  // const [otherExpense, setOtherexp] = useState([
-  //   { id: "1", description: "Food", amount: 1000, date: "2023-05-30" },
-  //   { id: "2", description: "Utilities", amount: 5000, date: "2023-04-10" },
-  //   { id: "3", description: "Consumables", amount: 8000, date: "2023-05-23" },
-  //   { id: "4", description: "Deliveries", amount: 1000, date: "2023-05-25" },
-  // ]);
 
   const [dateFilter, setDateFilter] = useState("Month");
 
@@ -533,8 +525,11 @@ const Finances = () => {
   function computeTotalExpenses() {
     let expense = 0;
     // Commi
-    for (let i = 0; i < filteredPayment.length; i++) {
-      expense += filteredPayment[i].treatment.procedure.amount * 0.1;
+    const withoutowner = filteredPayment.filter(
+      (commi) => filteredPayment[0].handledby._id !== filteredPayment[0].dentist
+    );
+    for (let i = 0; i < withoutowner.length; i++) {
+      expense += withoutowner[i].treatment.procedure.amount * 0.1;
     }
     // Salary
     for (let i = 0; i < filteredSalary.length; i++) {
@@ -546,6 +541,12 @@ const Finances = () => {
     }
     return expense;
   }
+  // Format for number to be currency
+  const formatter = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "Php",
+  });
+
   // Salary Validation
   const schemaDent = Joi.object({
     firstName: Joi.string().min(3).max(20).required(),
@@ -621,7 +622,9 @@ const Finances = () => {
               <GiReceiveMoney fill="white" size={40} />
               <div className="text-white -translate-y-1 px-1">
                 <h2>Total Revenue</h2>
-                <p className="text-xl font-medium">{`PHP ${computeTotalRevenue()}.00`}</p>
+                <p className="text-xl font-medium">
+                  {formatter.format(computeTotalRevenue())}
+                </p>
               </div>
             </div>
             <div className="flex justify-evenly text-xs pb-2">
@@ -648,7 +651,9 @@ const Finances = () => {
               <GiPayMoney fill="white" size={40} />
               <div className="text-white -translate-y-1 px-1">
                 <h2>Total Expenses</h2>
-                <p className="text-xl font-medium">{`PHP ${computeTotalExpenses()}.00`}</p>
+                <p className="text-xl font-medium">
+                  {formatter.format(computeTotalExpenses())}
+                </p>
               </div>
             </div>
             <div className="flex justify-evenly text-xs pb-2">
@@ -677,8 +682,8 @@ const Finances = () => {
                 <div
                   className={
                     !increport
-                      ? "text-sm max-w-[140px] min-w-[100px] w-full text-center bg-slate-300  cursor-pointer hover:bg-slate-100"
-                      : "text-sm max-w-[140px] min-w-[100px] w-full text-center bg-slate-100  cursor-pointer hover:bg-slate-100"
+                      ? "text-sm max-w-[400px] min-w-[100px] w-full text-center bg-slate-300  cursor-pointer hover:bg-slate-100"
+                      : "text-sm max-w-[400px] min-w-[100px] w-full text-center bg-slate-100  cursor-pointer hover:bg-slate-100"
                   }
                   onClick={selectIncomeRep}
                 >
@@ -689,8 +694,8 @@ const Finances = () => {
                 <div
                   className={
                     !increportperdent
-                      ? "text-sm max-w-[140px] min-w-[100px] w-full text-center  bg-slate-300  cursor-pointer hover:bg-slate-100"
-                      : "text-sm max-w-[140px] min-w-[100px] w-full text-center  bg-slate-100  cursor-pointer hover:bg-slate-100"
+                      ? "text-sm max-w-[400px] min-w-[100px] w-full text-center  bg-slate-300  cursor-pointer hover:bg-slate-100"
+                      : "text-sm max-w-[400px] min-w-[100px] w-full text-center  bg-slate-100  cursor-pointer hover:bg-slate-100"
                   }
                   onClick={selectIncomeperDent}
                 >
@@ -700,8 +705,8 @@ const Finances = () => {
                 <div
                   className={
                     !increportperinsu
-                      ? "text-sm max-w-[140px] min-w-[100px] w-full text-center  bg-slate-300  cursor-pointer hover:bg-slate-100"
-                      : "text-sm max-w-[140px] min-w-[100px] w-full text-center  bg-slate-100  cursor-pointer hover:bg-slate-100"
+                      ? "text-sm max-w-[400px] min-w-[100px] w-full text-center  bg-slate-300  cursor-pointer hover:bg-slate-100"
+                      : "text-sm max-w-[400px] min-w-[100px] w-full text-center  bg-slate-100  cursor-pointer hover:bg-slate-100"
                   }
                   onClick={selectIncomeperinsu}
                 >
@@ -1070,7 +1075,7 @@ const Finances = () => {
       </div>
 
       {/* Large Screen */}
-      <div className="w-full bg-slate-50 hidden md:block">
+      <div className="w-full bg-slate-50  hidden md:block">
         <div className="flex items-center justify-between ">
           <h1 className="text-3xl tracking-widest font-bold p-3">Finances</h1>
           <div className="flex pr-8">
@@ -1097,7 +1102,9 @@ const Finances = () => {
               <GiReceiveMoney fill="white" size={45} />
               <div className="text-white -translate-y-1 px-1">
                 <h2>Total Revenue</h2>
-                <p className="text-2xl font-medium">{`PHP ${computeTotalRevenue()}.00`}</p>
+                <p className="text-2xl font-medium">
+                  {formatter.format(computeTotalRevenue())}
+                </p>
               </div>
             </div>
             <div className="flex justify-evenly text-xs pt-1">
@@ -1122,7 +1129,9 @@ const Finances = () => {
               <GiPayMoney fill="white" size={45} />
               <div className="text-white -translate-y-1 px-1">
                 <h2>Total Expenses</h2>
-                <p className="text-2xl font-medium">{`PHP ${computeTotalExpenses()}.00`}</p>
+                <p className="text-2xl font-medium">
+                  {formatter.format(computeTotalExpenses())}
+                </p>
               </div>
             </div>
             <div className="flex justify-evenly text-xs pt-1">

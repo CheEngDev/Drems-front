@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import _ from "lodash";
 import moment from "moment";
 import { GrView } from "react-icons/gr";
 import avatar from "../assets/avatar.png";
+import pxpicContext from "../context/pxpicContext";
 
 const IncomeReport = (props) => {
   const pxs = props.pxs;
+  const pxpiccontext = useContext(pxpicContext);
+  const pxpic = pxpiccontext.pxPics;
 
   const payments = props.payments;
   const sortedpayments = _.orderBy(payments, "date", "desc");
@@ -65,6 +68,21 @@ const IncomeReport = (props) => {
     return revenues;
   }
 
+  // Px Pic
+  function handlePxPic(id) {
+    const pxprofpic = pxpic.filter((p) => p.pfpowner === id);
+    if (pxprofpic[0]) {
+      return pxprofpic[0].profpicUrl;
+    } else {
+      return avatar;
+    }
+  }
+
+  // Format for number to be currency
+  const formatter = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "Php",
+  });
   return (
     <div>
       {/* Mobile */}
@@ -72,7 +90,11 @@ const IncomeReport = (props) => {
         {pxswhopaid.map((px) => (
           <div className="flex py-1 border-b-2">
             <div className="flex max-w-[350px] min-w-[130px] w-full ">
-              <img className="rounded-full w-[60px] mx-2" src={avatar} alt="" />
+              <img
+                className="rounded-full w-[55px] mx-2"
+                src={handlePxPic(px._id)}
+                alt=""
+              />
               <div className="pt-2 text-sm font-medium">
                 {px.firstName} {px.lastName}
               </div>
@@ -80,15 +102,15 @@ const IncomeReport = (props) => {
             <div className="max-w-[300px] min-w-[130px] w-full text-center ">
               <p className="pt-2 text-gray-500">
                 Total Payments <br />
-                <span className="text-black">{`Php ${computerevenue(
-                  px._id
-                )}.00`}</span>
+                <span className="text-black">
+                  {formatter.format(computerevenue(px._id))}
+                </span>
               </p>
             </div>
             <div className="  w-full text-center pt-3">
               <a
                 className="bg-[#1993c6] w-[40px] inline-block rounded-full py-1 text-white cursor-pointer"
-                href={`/dashboard/patients/${px.id}`}
+                href={`/dashboard/patients/${px._id}`}
               >
                 <GrView fill="white" className="translate-x-3" />
               </a>
@@ -98,14 +120,18 @@ const IncomeReport = (props) => {
       </div>
       <div className="flex md:hidden justify-center text-lg ">
         <h2 className="font-semibold">Total Revenue</h2>
-        <p className="mx-2">{`Php ${computetotalrev()}.00`}</p>
+        <p className="mx-2">{formatter.format(computetotalrev())}</p>
       </div>
       {/* Large Screen */}
       <div className="max-h-[330px] overflow-y-auto hidden md:block">
         {pxswhopaid.map((px) => (
           <div className="flex py-1 border-b-2">
             <div className="flex max-w-[350px] min-w-[150px] w-full ">
-              <img className="rounded-full w-[60px] mx-2" src={avatar} alt="" />
+              <img
+                className="rounded-full w-[55px] mx-2"
+                src={handlePxPic(px._id)}
+                alt=""
+              />
               <div className="pt-2 font-medium">
                 {px.firstName} {px.lastName}
               </div>
@@ -113,15 +139,15 @@ const IncomeReport = (props) => {
             <div className="max-w-[350px] min-w-[150px] w-full text-center mx-2">
               <p className="pt-2 text-gray-500">
                 Total Payments <br />
-                <span className="text-black">{`Php ${computerevenue(
-                  px.id
-                )}.00`}</span>
+                <span className="text-black">
+                  {formatter.format(computerevenue(px.id))}
+                </span>
               </p>
             </div>
             <div className=" max-w-[350px] min-w-[150px] w-full text-center pt-3">
               <a
                 className="bg-[#1993c6] w-[110px] inline-block rounded-full py-1 text-white cursor-pointer"
-                href={`/dashboard/patients/${px.id}`}
+                href={`/dashboard/patients/${px._id}`}
               >
                 View Details
               </a>
@@ -131,7 +157,7 @@ const IncomeReport = (props) => {
       </div>
       <div className="hidden md:flex justify-center text-lg ">
         <h2 className="font-semibold">Total Revenue</h2>
-        <p className="mx-2">{`Php ${computetotalrev()}.00`}</p>
+        <p className="mx-2">{formatter.format(computetotalrev())}</p>
       </div>
     </div>
   );

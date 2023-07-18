@@ -57,6 +57,12 @@ const SalaryReport = (props) => {
     return salaryofdent;
   }
 
+  // Format for number to be currency
+  const formatter = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "Php",
+  });
+
   return (
     <div>
       <div className="max-h-[330px] overflow-y-auto">
@@ -77,7 +83,7 @@ const SalaryReport = (props) => {
                 {assoc._id === assoc.dentist ? (
                   <p>Clinic Owner</p>
                 ) : (
-                  <p>{`Php ${computeSalary(assoc.id)}.00`}</p>
+                  <p>{formatter.format(computeSalary(assoc.id))}</p>
                 )}
               </div>
             </div>
@@ -86,7 +92,7 @@ const SalaryReport = (props) => {
       </div>
       <div className="flex justify-center text-lg">
         <h2 className="font-semibold">Total Revenue</h2>
-        <p className="mx-2">{`Php ${computeTotalSalary()}.00`}</p>
+        <p className="mx-2">{formatter.format(computeTotalSalary())}</p>
       </div>
     </div>
   );

@@ -48,6 +48,11 @@ const OtherExpenses = (props) => {
     return otherexpenses;
   }
 
+  const formatter = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "Php",
+  });
+
   return (
     <div>
       <div className="max-h-[330px] overflow-y-auto ">
@@ -60,7 +65,7 @@ const OtherExpenses = (props) => {
 
             <div className=" md:max-w-[200px] max-w-[150px] w-full ">
               <p className=" text-gray-500">Expense</p>
-              <p>{`Php ${expense.amount}.00`}</p>
+              <p>{formatter.format(expense.amount)}</p>
             </div>
             <div className="md:max-w-[200px] max-w-[150px] w-full translate-y-3 font-medium">{`${moment(
               expense.date
@@ -77,7 +82,7 @@ const OtherExpenses = (props) => {
       </div>
       <div className="flex justify-center text-lg">
         <h2 className="font-semibold">Total Revenue</h2>
-        <p className="mx-2">{`Php ${computeTotalOtherExpenses()}.00`}</p>
+        <p className="mx-2">{formatter.format(computeTotalOtherExpenses())}</p>
       </div>
     </div>
   );

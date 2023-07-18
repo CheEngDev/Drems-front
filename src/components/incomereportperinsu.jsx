@@ -33,10 +33,11 @@ const IncomeRepPerInsu = (props) => {
   };
 
   const filteredPay = pay[props.dateFilter];
-  console.log(filteredPay);
-  console.log(payments);
+
   function computerevenue(id) {
-    const revenuesinsu = filteredPay.filter((pay) => pay.company._id === id);
+    const withcompany = filteredPay.filter((p) => p.company);
+
+    const revenuesinsu = withcompany.filter((pay) => pay.company._id === id);
     let revenues = 0;
     for (let i = 0; i < revenuesinsu.length; i++) {
       revenues += revenuesinsu[i].treatment.procedure.amount;
@@ -45,13 +46,20 @@ const IncomeRepPerInsu = (props) => {
   }
 
   function computetotalrev() {
-    const revenuesinsu = filteredPay.filter((pay) => pay.hmoCompany);
+    const withcompany = filteredPay.filter((p) => p.company);
     let revenues = 0;
-    for (let i = 0; i < filteredPay.length; i++) {
-      revenues += filteredPay[i].treatment.procedure.amount;
+    for (let i = 0; i < withcompany.length; i++) {
+      revenues += withcompany[i].treatment.procedure.amount;
     }
     return revenues;
   }
+
+  // Format for number to be currency
+  const formatter = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "Php",
+  });
+
   return (
     <div>
       {/* Mobile */}
@@ -63,14 +71,14 @@ const IncomeRepPerInsu = (props) => {
             </div>
             <div className="max-w-[145px] min-w-[130px] w-full ">
               <p className=" text-gray-500">Total Revenue</p>
-              <p>{`Php ${computerevenue(company._id)}.00`}</p>
+              <p>{formatter.format(computerevenue(company._id))}</p>
             </div>
           </div>
         ))}
       </div>
       <div className="flex justify-center text-lg md:hidden">
         <h2 className="font-semibold">Total Revenue</h2>
-        <p className="mx-2">{`Php ${computetotalrev()}.00`}</p>
+        <p className="mx-2">{formatter.format(computetotalrev())}</p>
       </div>
       {/* Large Screens */}
       <div className="max-h-[330px] overflow-y-auto hidden md:block">
@@ -81,14 +89,14 @@ const IncomeRepPerInsu = (props) => {
             </div>
             <div className=" max-w-[200px] min-w-[150px] w-full ">
               <p className=" text-gray-500">Total Revenue</p>
-              <p>{`Php ${computerevenue(company._id)}.00`}</p>
+              <p>{formatter.format(computerevenue(company._id))}</p>
             </div>
           </div>
         ))}
       </div>
       <div className="justify-center text-lg hidden md:flex">
         <h2 className="font-semibold">Total Revenue</h2>
-        <p className="mx-2">{`Php ${computetotalrev()}.00`}</p>
+        <p className="mx-2">{formatter.format(computetotalrev())}</p>
       </div>
     </div>
   );

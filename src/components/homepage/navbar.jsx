@@ -169,7 +169,11 @@ const Navbar = () => {
                   : "inline-block w-1/2 pt-12 h-32 transition-all duration-500 overflow-hidden opacity-0 text-xl"
               }
             >
-              <a className="hover:text-[#0099ff]" href="#" onClick={handleNav}>
+              <a
+                className="hover:text-[#0099ff]"
+                href="/register"
+                onClick={handleNav}
+              >
                 REGISTER
               </a>
             </li>
@@ -180,7 +184,11 @@ const Navbar = () => {
                   : "inline-block w-1/2 pt-12 h-32 transition-all duration-500 overflow-hidden opacity-0 text-xl pl-6"
               }
             >
-              <a className="hover:text-[#0099ff]" href="#" onClick={handleNav}>
+              <a
+                className="hover:text-[#0099ff]"
+                href="/login"
+                onClick={handleNav}
+              >
                 LOG IN
               </a>
             </li>

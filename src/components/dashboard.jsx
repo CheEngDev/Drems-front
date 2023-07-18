@@ -53,6 +53,45 @@ const Dashboard = (props) => {
       moment(px.date).format("MMM/YYYY/W") === moment().format("MMM/YYYY/W")
   );
 
+  const todayrevenue = payments.filter(
+    (pay) =>
+      dayjs(pay.date).format("YYYY/MM/DD") === dayjs().format("YYYY/MM/DD")
+  );
+
+  const weeklyrevenue = payments.filter(
+    (pay) =>
+      moment(pay.date).format("MMM/YYYY/W") === moment().format("MMM/YYYY/W")
+  );
+
+  const formatter = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "Php",
+  });
+
+  // Calculate revnue today
+  function computerevenuetoday() {
+    let revenues = 0;
+    for (let i = 0; i < todayrevenue.length; i++) {
+      revenues += todayrevenue[i].treatment.procedure.amount;
+    }
+    return formatter.format(revenues);
+  }
+
+  // Calculate Revenue within the week
+  function computerevenueweek() {
+    let revenues = 0;
+    for (let i = 0; i < weeklyrevenue.length; i++) {
+      revenues += weeklyrevenue[i].treatment.procedure.amount;
+    }
+    return formatter.format(revenues);
+  }
+
+  // Added companies
+  const addedComp = companies.filter(
+    (comp) =>
+      moment(comp.date).format("MMM/YYYY/W") === moment().format("MMM/YYYY/W")
+  );
+
   let px10am = pxs.filter((px) => px.startTime === "10:00 AM");
   let px11am = pxs.filter((px) => px.startTime === "11:00 AM");
   let px12pm = pxs.filter((px) => px.startTime === "12:00 PM");
@@ -63,7 +102,6 @@ const Dashboard = (props) => {
   let px5pm = pxs.filter((px) => px.startTime === "5:00 PM");
   let px6pm = pxs.filter((px) => px.startTime === "6:00 PM");
 
-  console.log(px11am);
   return (
     <div className="w-full bg-slate-50 ">
       {/* Mobile */}
@@ -370,17 +408,49 @@ const Dashboard = (props) => {
                 <h2 className="text-center">No Schedule</h2>
               )}
             </div>
+            {/* 6pm */}
+            <div>
+              <h2 className="text-center bg-slate-200 font-bold text-sm tracking-widest">
+                6:00 PM
+              </h2>
+              {px6pm[0] ? (
+                <div className="flex justify-evenly md:px-2 lg:px-7">
+                  <div>
+                    <div>
+                      <h3 className="font-semibold text-sm">Patient</h3>
+                      <p>{`${px6pm[0].patient.lastName}, ${px6pm[0].patient.firstName}`}</p>
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-sm">Age</h3>
+                      <p className="">{`${px6pm[0].patient.age}`}</p>
+                    </div>
+                  </div>
+                  <div>
+                    <div>
+                      <h3 className="font-semibold text-sm">Dentist</h3>
+                      <p className="text-center">{`Dr. ${px6pm[0].dentistOD.lastName}`}</p>
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-sm">Procedure</h3>
+                      <p>{`${px6pm[0].procedure.name}`}</p>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <h2 className="text-center">No Schedule</h2>
+              )}
+            </div>
           </div>
         </div>
       </div>
       {/* Large Screens */}
       <div className=" h-screen w-full bg-slate-50  hidden md:block">
         <h1 className="text-3xl font-bold pl-5 py-2">Overview</h1>
-        <div className="flex max-h-[520px] h-full pl-5">
+        <div className="flex max-h-[520px] h-full pl-3">
           {/* Overview */}
-          <div className="min-w-[150px] w-full text-xs md:max-w-[165px]  lg:max-w-[180px] ">
+          <div className="min-w-[150px] w-full text-xs md:max-w-[170px]  lg:max-w-[180px] ">
             <div className=" max-w-[180px] w-full bg-white mb-4 rounded-lg font-medium">
-              <div className="p-3">
+              <div className="px-1 py-2">
                 <h2 className="text-[#A9A9A9]">Appointments</h2>
                 <p>
                   Today :
@@ -414,12 +484,12 @@ const Dashboard = (props) => {
                 <p>
                   Today :
                   <span className=" inline-block px-1 underline text-base ">
-                    Php 10,000
+                    {computerevenuetoday()}
                   </span>
                 </p>
               </div>
               <div className="bg-[#0099ff] rounded-b-lg font-normal">
-                <p className="p-1 text-sm">Weekly Revenue:</p>
+                <p className="p-1 text-sm">Weekly: {computerevenueweek()}</p>
               </div>
             </div>
             <div className="max-w-[180px] w-full bg-white mt-4 rounded-lg font-medium">
@@ -433,7 +503,7 @@ const Dashboard = (props) => {
                 </p>
               </div>
               <div className="bg-[#0099ff] rounded-b-lg font-normal">
-                <p className="p-1 text-sm">Weekly added:</p>
+                <p className="p-1 text-sm">Weekly added: {addedComp.length}</p>
               </div>
             </div>
           </div>
@@ -643,6 +713,34 @@ const Dashboard = (props) => {
                     <div>
                       <h3 className="font-semibold text-sm">Procedure</h3>
                       <p>{`${px5pm[0].procedure.name}`}</p>
+                    </div>
+                  </div>
+                ) : (
+                  <h2 className="text-center">No Schedule</h2>
+                )}
+              </div>
+              {/* 6pm */}
+              <div>
+                <h2 className="text-center bg-slate-200 font-bold text-sm tracking-widest">
+                  6:00 PM
+                </h2>
+                {px6pm[0] ? (
+                  <div className="flex justify-between md:px-2 lg:px-7">
+                    <div>
+                      <h3 className="font-semibold text-sm">Patient</h3>
+                      <p>{`${px6pm[0].patient.lastName}, ${px6pm[0].patient.firstName}`}</p>
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-sm">Age</h3>
+                      <p className="text-center">{`${px6pm[0].patient.age}`}</p>
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-sm">Dentist</h3>
+                      <p className="text-center">{`Dr. ${px6pm[0].dentistOD.lastName}`}</p>
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-sm">Procedure</h3>
+                      <p>{`${px6pm[0].procedure.name}`}</p>
                     </div>
                   </div>
                 ) : (

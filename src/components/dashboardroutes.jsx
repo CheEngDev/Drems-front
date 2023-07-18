@@ -15,6 +15,7 @@ import procedureService from "../services/procedureService";
 import expensesServices from "../services/expensesServices";
 import hmoService from "../services/hmoService";
 import paymentService from "../services/paymentService";
+import pxpicService from "../services/pxpicService";
 import UserContext from "../context/userContext";
 import pxListContext from "../context/pxListContext";
 import appointmentContext from "../context/appointmentContext";
@@ -23,6 +24,7 @@ import hmoContext from "../context/hmoContext";
 import expensesContext from "../context/expensesContext";
 import assocDentContext from "../context/assocDentContext";
 import paymentContext from "../context/paymentContext";
+import pxpicContext from "../context/pxpicContext";
 import treatmentContext from "../context/treatmentRecContext";
 import dayjs from "dayjs";
 
@@ -36,6 +38,7 @@ const Dashboardroutes = () => {
   const [otherExpense, setOtherexp] = useState([]);
   const [salaries, setSalaries] = useState([]);
   const [payments, setPayments] = useState([]);
+  const [pxPics, setpxPics] = useState([]);
 
   useEffect(() => {
     getUsers();
@@ -47,6 +50,7 @@ const Dashboardroutes = () => {
     getOtherExpenses();
     getSalaries();
     getPayments();
+    getPxPics();
   }, []);
 
   // Get User Infos in backend
@@ -303,65 +307,114 @@ const Dashboardroutes = () => {
   //   const result = await treatmentRecService.deletedTreatmentRec(Tr);
   // }
 
+  // Get Px Pics
+  async function getPxPics() {
+    const result = await pxpicService.getpxPic();
+    setpxPics(result.data);
+  }
+  // Add Px Pics
+  async function addPxpic(pxpic) {
+    const result = await pxpicService.addpxPic(pxpic);
+
+    setpxPics((oldArray) => [...oldArray, result.data]);
+  }
+  // Edit Px Pics
+
+  async function editPxpic(pxpic) {
+    const pxpic2 = pxPics;
+    let selectedpxpic = pxpic2.filter((p) => p._id === pxpic._id);
+    const index = pxPics.indexOf(selectedpxpic[0]);
+    pxpic2[index] = {
+      _id: pxpic._id,
+      pfpowner: pxpic.pfpowner,
+      profpicUrl: pxpic.profpicUrl,
+    };
+    setpxPics(pxpic2);
+
+    const result = await pxpicService.editpxPic(pxpic);
+  }
+
+  // async function editPxPic(pxpic) {
+  //   const pxpics2 = pxPics;
+  //   let selectedpxpic = pxpics2.filter((p) => p._id === pxPics._id);
+  //   const index = procedures.indexOf(selectedpxpic[0]);
+  //   procedures2[index] = {
+  //     _id: procedure._id,
+  //     name: procedure.name,
+  //     amount: procedure.amount,
+  //     dentist: procedure.dentist,
+  //   };
+  //   setProcedures(procedures2);
+
+  //   const result = await procedureService.editProcedure(procedure);
+  // }
+
   return (
     <div className="md:flex items-stretch ">
-      <paymentContext.Provider value={payments}>
-        <hmoContext.Provider value={{ companies, addHmo, deleteHmo, editHmo }}>
-          <expensesContext.Provider
-            value={{
-              otherExpense,
-              addOtherExpense,
-              deleteOtherExpense,
-              salaries,
-              addSalary,
-              deleteSalary,
-            }}
+      <pxpicContext.Provider value={{ pxPics, addPxpic, editPxpic }}>
+        <paymentContext.Provider value={payments}>
+          <hmoContext.Provider
+            value={{ companies, addHmo, deleteHmo, editHmo }}
           >
-            <appointmentContext.Provider
+            <expensesContext.Provider
               value={{
-                appointments,
-                addAppointment,
-                deleteAppointment,
-                editAppointment,
+                otherExpense,
+                addOtherExpense,
+                deleteOtherExpense,
+                salaries,
+                addSalary,
+                deleteSalary,
               }}
             >
-              <pxListContext.Provider
-                value={{ pxs, addPatient, deletePatient, editPatient }}
+              <appointmentContext.Provider
+                value={{
+                  appointments,
+                  addAppointment,
+                  deleteAppointment,
+                  editAppointment,
+                }}
               >
-                <assocDentContext.Provider
-                  value={{
-                    associate,
-                    addAssociate,
-                    deleteAssociate,
-                    editAssociate,
-                  }}
+                <pxListContext.Provider
+                  value={{ pxs, addPatient, deletePatient, editPatient }}
                 >
-                  <UserContext.Provider value={{ user, editUser }}>
-                    <procedureContext.Provider
-                      value={{
-                        procedures,
-                        addProcedure,
-                        deleteProcedure,
-                        editProcedure,
-                      }}
-                    >
-                      <DashSidebar />
-                      <Routes>
-                        <Route index element={<Dashboard />} />
-                        <Route path="patients" element={<Patients />} />
-                        <Route path="myclinic" element={<MyClinic />} />
-                        <Route path="patients/:id" element={<Patient />} />
-                        <Route path="finances" element={<Finances />} />
-                        <Route path="appointments" element={<Appointments />} />
-                      </Routes>
-                    </procedureContext.Provider>
-                  </UserContext.Provider>
-                </assocDentContext.Provider>
-              </pxListContext.Provider>
-            </appointmentContext.Provider>
-          </expensesContext.Provider>
-        </hmoContext.Provider>
-      </paymentContext.Provider>
+                  <assocDentContext.Provider
+                    value={{
+                      associate,
+                      addAssociate,
+                      deleteAssociate,
+                      editAssociate,
+                    }}
+                  >
+                    <UserContext.Provider value={{ user, editUser }}>
+                      <procedureContext.Provider
+                        value={{
+                          procedures,
+                          addProcedure,
+                          deleteProcedure,
+                          editProcedure,
+                        }}
+                      >
+                        <DashSidebar />
+                        <Routes>
+                          <Route index element={<Dashboard />} />
+                          <Route path="patients" element={<Patients />} />
+                          <Route path="myclinic" element={<MyClinic />} />
+                          <Route path="patients/:id" element={<Patient />} />
+                          <Route path="finances" element={<Finances />} />
+                          <Route
+                            path="appointments"
+                            element={<Appointments />}
+                          />
+                        </Routes>
+                      </procedureContext.Provider>
+                    </UserContext.Provider>
+                  </assocDentContext.Provider>
+                </pxListContext.Provider>
+              </appointmentContext.Provider>
+            </expensesContext.Provider>
+          </hmoContext.Provider>
+        </paymentContext.Provider>
+      </pxpicContext.Provider>
     </div>
   );
 };

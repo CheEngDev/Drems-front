@@ -16,6 +16,7 @@ import SearchBox from "./searchbox";
 import Pagination from "./common/pagination";
 import Input from "./common/input";
 import pxListContext from "../context/pxListContext";
+import pxpicContext from "../context/pxpicContext";
 import moment from "moment/moment";
 import Joi from "joi";
 
@@ -23,6 +24,8 @@ const Patients = () => {
   // Contexts
   const pxContext = useContext(pxListContext);
   const pxs = pxContext.pxs;
+  const pxpiccontext = useContext(pxpicContext);
+  const pxpic = pxpiccontext.pxPics;
 
   // Client Side Only Data
   const [currentPage, setPage] = useState(0);
@@ -242,6 +245,15 @@ const Patients = () => {
     setErrors({});
   }
 
+  function handlePxPic(id) {
+    const pxprofpic = pxpic.filter((p) => p.pfpowner === id);
+    if (pxprofpic[0]) {
+      return pxprofpic[0].profpicUrl;
+    } else {
+      return avatar;
+    }
+  }
+
   function addPx(e) {
     e.preventDefault();
     const errors = validate();
@@ -316,7 +328,7 @@ const Patients = () => {
 
   return (
     // Patient List
-    <div className="w-full  bg-slate-50">
+    <div className="w-full pb-20 bg-slate-50">
       {/* Mobile */}
       <div className="md:hidden h-screen">
         <div className="pt-[52px] flex items-center justify-center px-2">
@@ -373,7 +385,10 @@ const Patients = () => {
               className="bg-white w-full py-3 border-b-2 border-gray-200  flex items-center justify-evenly px-3"
             >
               <div className="flex items-center">
-                <Avatar img={avatar} />
+                <img
+                  className="w-[55px] h-[55px] mr-2 rounded-full"
+                  src={handlePxPic(px._id)}
+                />
                 <div>
                   <a
                     className="cursor-pointer text-sm font-medium tracking-widest"
@@ -674,7 +689,10 @@ const Patients = () => {
               {pagpxs.map((px) => (
                 <tr key={px._id}>
                   <td className="pt-1 border-b-2 border-gray-200 font-medium min-w-[120px] w-[170px] lg:w-[190px]">
-                    <Avatar img={avatar} />
+                    <img
+                      className="w-[65px] h-[65px] rounded-full"
+                      src={handlePxPic(px._id)}
+                    />
                     <a
                       className="cursor-pointer"
                       href={`/dashboard/patients/${px._id}`}

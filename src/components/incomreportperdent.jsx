@@ -52,6 +52,12 @@ const IncomeRepPerDent = (props) => {
     return revenues;
   }
 
+  // Format for number to be currency
+  const formatter = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "Php",
+  });
+
   return (
     <div>
       {/* Mobile */}
@@ -62,7 +68,7 @@ const IncomeRepPerDent = (props) => {
               <div className="max-w-[145px] min-w-[130px] w-full translate-y-3 font-medium">{`Dr. ${assoc.lastName}, ${assoc.firstName} `}</div>
               <div className=" max-w-[145px] min-w-[130px] w-full ">
                 <p className=" text-gray-500">Total Revenue</p>
-                <p>{`Php ${computerevenue(assoc._id)}.00`}</p>
+                <p>{formatter.format(computerevenue(assoc._id))}</p>
               </div>
             </div>
           </div>
@@ -70,7 +76,7 @@ const IncomeRepPerDent = (props) => {
       </div>
       <div className="justify-center text-lg flex md:hidden">
         <h2 className="font-semibold">Total Revenue</h2>
-        <p className="mx-2">{`Php ${computetotalrev()}.00`}</p>
+        <p className="mx-2">{formatter.format(computetotalrev())}</p>
       </div>
       {/* Large Screen */}
       <div className="max-h-[330px] overflow-y-auto hidden md:block">
@@ -80,7 +86,7 @@ const IncomeRepPerDent = (props) => {
               <div className="max-w-[200px] min-w-[150px] w-full translate-y-3 font-medium">{`Dr. ${assoc.lastName}, ${assoc.firstName} `}</div>
               <div className=" max-w-[200px] min-w-[150px] w-full ">
                 <p className=" text-gray-500">Total Revenue</p>
-                <p>{`Php ${computerevenue(assoc._id)}.00`}</p>
+                <p>{formatter.format(computerevenue(assoc._id))}</p>
               </div>
             </div>
           </div>
@@ -88,7 +94,7 @@ const IncomeRepPerDent = (props) => {
       </div>
       <div className="justify-center text-lg hidden md:flex">
         <h2 className="font-semibold">Total Revenue</h2>
-        <p className="mx-2">{`Php ${computetotalrev()}.00`}</p>
+        <p className="mx-2">{formatter.format(computetotalrev())}</p>
       </div>
     </div>
   );

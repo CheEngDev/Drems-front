@@ -14,6 +14,7 @@ import UserContext from "../context/userContext";
 import procedureContext from "../context/procedureContext";
 import pxListContext from "../context/pxListContext";
 import assocDentContext from "../context/assocDentContext";
+import pxpicContext from "../context/pxpicContext";
 import Joi from "joi";
 import dayjs from "dayjs";
 
@@ -28,12 +29,14 @@ export default function Appointments(props) {
   const procedures = proceduresContext.procedures;
   const assocContext = useContext(assocDentContext);
   const dentists = assocContext.associate;
+  const pxpiccontext = useContext(pxpicContext);
+  const pxpic = pxpiccontext.pxPics;
 
   const days = ["S", "M", "T", "W", "T", "F", "S"];
   const currentDate = dayjs();
   const [today, setToday] = useState(currentDate);
   const [selectDate, setSelectDate] = useState(currentDate);
-  console.log(appointment);
+
   // Scheduled
   // const [appointment, setAppointments] = useState([
   //   {
@@ -162,6 +165,17 @@ export default function Appointments(props) {
     remarks: "",
     completed: "",
   });
+
+  // Px Pic
+  function handlePxPic(id) {
+    const pxprofpic = pxpic.filter((p) => p.pfpowner === id);
+
+    if (pxprofpic[0]) {
+      return pxprofpic[0].profpicUrl;
+    } else {
+      return avatar;
+    }
+  }
 
   // Procedures
   // const [procedures] = useState([
@@ -351,7 +365,8 @@ export default function Appointments(props) {
   let px4pm = scheduled.filter((px) => px.startTime === "4:00 PM");
   let px5pm = scheduled.filter((px) => px.startTime === "5:00 PM");
   let px6pm = scheduled.filter((px) => px.startTime === "6:00 PM");
-
+  console.log(pxpic);
+  console.log(px10am);
   const scheds = [
     ...px10am,
     ...px11am,
@@ -363,6 +378,7 @@ export default function Appointments(props) {
     ...px5pm,
     ...px6pm,
   ];
+
   // Popup for delete/edit
   function viewDetsPopup(appoint) {
     const sched = scheds.find((e) => e._id === appoint._id);
@@ -699,11 +715,11 @@ export default function Appointments(props) {
                         className="flex cursor-pointer"
                         onClick={removeDetsPopup}
                       >
-                        {px.patient.img ? (
-                          <Avatar img={px.patient.img} />
-                        ) : (
-                          <Avatar img={avatar} />
-                        )}
+                        <img
+                          className="rounded-full w-[50px] mx-2"
+                          src={handlePxPic(px.patient._id)}
+                          alt=""
+                        />
                         <p>
                           {px.patient.lastName}, {<br />}
                           {px.patient.firstName}
@@ -751,11 +767,11 @@ export default function Appointments(props) {
                         className="flex cursor-pointer"
                         onClick={removeDetsPopup}
                       >
-                        {px.patient.img ? (
-                          <Avatar img={px.patient.img} />
-                        ) : (
-                          <Avatar img={avatar} />
-                        )}
+                        <img
+                          className="rounded-full w-[50px] mx-2"
+                          src={handlePxPic(px.patient._id)}
+                          alt=""
+                        />
                         <p>
                           {px.patient.lastName}, {<br />}
                           {px.patient.firstName}
@@ -804,11 +820,11 @@ export default function Appointments(props) {
                         className="flex cursor-pointer"
                         onClick={removeDetsPopup}
                       >
-                        {px.patient.img ? (
-                          <Avatar img={px.patient.img} />
-                        ) : (
-                          <Avatar img={avatar} />
-                        )}
+                        <img
+                          className="rounded-full w-[50px] mx-2"
+                          src={handlePxPic(px.patient._id)}
+                          alt=""
+                        />
                         <p>
                           {px.patient.lastName}, {<br />}
                           {px.patient.firstName}
@@ -857,11 +873,11 @@ export default function Appointments(props) {
                         className="flex cursor-pointer"
                         onClick={removeDetsPopup}
                       >
-                        {px.patient.img ? (
-                          <Avatar img={px.patient.img} />
-                        ) : (
-                          <Avatar img={avatar} />
-                        )}
+                        <img
+                          className="rounded-full w-[50px] mx-2"
+                          src={handlePxPic(px.patient._id)}
+                          alt=""
+                        />
                         <p>
                           {px.patient.lastName}, {<br />}
                           {px.patient.firstName}
@@ -910,11 +926,11 @@ export default function Appointments(props) {
                         className="flex cursor-pointer"
                         onClick={removeDetsPopup}
                       >
-                        {px.patient.img ? (
-                          <Avatar img={px.patient.img} />
-                        ) : (
-                          <Avatar img={avatar} />
-                        )}
+                        <img
+                          className="rounded-full w-[50px] mx-2"
+                          src={handlePxPic(px.patient._id)}
+                          alt=""
+                        />
                         <p>
                           {px.patient.lastName}, {<br />}
                           {px.patient.firstName}
@@ -963,11 +979,11 @@ export default function Appointments(props) {
                         className="flex cursor-pointer"
                         onClick={removeDetsPopup}
                       >
-                        {px.patient.img ? (
-                          <Avatar img={px.patient.img} />
-                        ) : (
-                          <Avatar img={avatar} />
-                        )}
+                        <img
+                          className="rounded-full w-[50px] mx-2"
+                          src={handlePxPic(px.patient._id)}
+                          alt=""
+                        />
                         <p>
                           {px.patient.lastName}, {<br />}
                           {px.patient.firstName}
@@ -1016,11 +1032,11 @@ export default function Appointments(props) {
                         className="flex cursor-pointer"
                         onClick={removeDetsPopup}
                       >
-                        {px.patient.img ? (
-                          <Avatar img={px.patient.img} />
-                        ) : (
-                          <Avatar img={avatar} />
-                        )}
+                        <img
+                          className="rounded-full w-[50px] mx-2"
+                          src={handlePxPic(px.patient._id)}
+                          alt=""
+                        />
                         <p>
                           {px.patient.lastName}, {<br />}
                           {px.patient.firstName}
@@ -1069,11 +1085,11 @@ export default function Appointments(props) {
                         className="flex cursor-pointer"
                         onClick={removeDetsPopup}
                       >
-                        {px.patient.img ? (
-                          <Avatar img={px.patient.img} />
-                        ) : (
-                          <Avatar img={avatar} />
-                        )}
+                        <img
+                          className="rounded-full w-[50px] mx-2"
+                          src={handlePxPic(px.patient._id)}
+                          alt=""
+                        />
                         <p>
                           {px.patient.lastName}, {<br />}
                           {px.patient.firstName}
@@ -1122,11 +1138,11 @@ export default function Appointments(props) {
                         className="flex cursor-pointer"
                         onClick={removeDetsPopup}
                       >
-                        {px.patient.img ? (
-                          <Avatar img={px.patient.img} />
-                        ) : (
-                          <Avatar img={avatar} />
-                        )}
+                        <img
+                          className="rounded-full w-[50px] mx-2"
+                          src={handlePxPic(px.patient._id)}
+                          alt=""
+                        />
                         <p>
                           {px.patient.lastName}, {<br />}
                           {px.patient.firstName}

@@ -12,20 +12,12 @@ import { GrView } from "react-icons/gr";
 import _ from "lodash";
 import dayjs from "dayjs";
 import Joi from "joi";
-import axios from "axios";
 import avatar from "../assets/avatar.png";
 import Pagination from "./common/pagination";
 import DentistList from "./common/dentistlistpopup";
 import ProcedureList from "./common/procedurespopup";
-import dental from "../assets/dental.png";
-import medicalhistory from "../assets/medical-report.png";
-import payment from "../assets/payment.png";
-import TreamentRecords from "./treatmentrec";
-import MedicalHistory from "./medicalhistory";
-import PxPayment from "./pxpayments";
 import DentalChart from "./common/dentalChart";
 import DentalChartPrev from "./common/dentalChartPrevCase";
-import http from "../services/httpService";
 import treatmentRecService from "../services/treatmentRecService";
 import medHisService from "../services/medHisService";
 import paymentService from "../services/paymentService";
@@ -34,6 +26,7 @@ import assocDentContext from "../context/assocDentContext";
 import UserContext from "../context/userContext";
 import procedureContext from "../context/procedureContext";
 import hmoContext from "../context/hmoContext";
+import pxpicContext from "../context/pxpicContext";
 
 const Patient = (props) => {
   // New Datas Connected to Backend or Context
@@ -47,12 +40,16 @@ const Patient = (props) => {
   const procedures = procContext.procedures;
   const hmocontext = useContext(hmoContext);
   const companies = hmocontext.companies;
+  const pxpiccontext = useContext(pxpicContext);
+  const pxpic = pxpiccontext.pxPics;
 
   // // Selected Patient
   const { id } = useParams();
 
   const selectedPx = pxs.filter((p) => p._id == id);
-
+  // Prof pic of px
+  const selectedProfile = pxpic.filter((p) => p.pfpowner === id);
+  console.log(selectedProfile);
   // States
   const [currentPage, setPage] = useState(0);
   const [currentPagePay, setPagePay] = useState(0);
@@ -109,6 +106,7 @@ const Patient = (props) => {
   });
   // View Payment Details
   const [viewPaymentDets, setViewPaymentDets] = useState(false);
+
   // Selected Medical History
   const [selectedMedicalHis, setSelectedMedicalHis] = useState([]);
   // Medical History Data
@@ -121,12 +119,22 @@ const Patient = (props) => {
   });
   // View Med His Details
   const [viewmhDets, setViewmhDets] = useState(false);
+
   // Errors
   const [errorsTr, setErrorsTr] = useState({});
   const [errorsPay, setErrorsPay] = useState({});
   const [errorsMedHis, setErrorsMedHis] = useState({});
+
   // Selected Tooth of Prev Case
   const [teeth, setTeeth] = useState(0);
+  // Pop up for changing px pic
+  const [uploadpxpf, setUploadpxPf] = useState(false);
+  // Prev of Px Pic
+  const [pxpicprev, setpxpicprev] = useState("");
+  // File of the Pic Uploaded in input
+  const [pxPic, setpxPic] = useState("");
+  // PxPic Data
+
   // get Treatments in backend
   async function getTreatmentRec() {
     const result = await treatmentRecService.getTreatmentRec();
@@ -165,7 +173,6 @@ const Patient = (props) => {
   let pagpay = paginate(selectedPayments, currentPagePay, pageSize);
 
   let pagmh = paginate(selectedMedicalHis, currentPageMH, pageSizeMH);
-  console.log(pagpay);
 
   // Selected Teeth for prev case
 
@@ -290,7 +297,7 @@ const Patient = (props) => {
     setPrevImg("");
   }
 
-  // Handle Upload in Cloudinary
+  // Handle Upload in Cloudinary medhis
   function handleImgUploadtoCloud() {
     const formData = new FormData();
     formData.append("file", medhisImg);
@@ -730,6 +737,75 @@ const Patient = (props) => {
     });
   }
 
+  // Upload pxPic Pop up
+  function uploadPicPopup() {
+    setUploadpxPf(true);
+  }
+  // Close pxPic Pop up
+  function closeuploadPicPopup() {
+    setUploadpxPf(false);
+    setpxpicprev("");
+  }
+
+  // Handle Px image upload
+  function handleImageUploadPx(e) {
+    const file = e.target.files[0];
+    setpxPic(file);
+
+    transformFilePx(file);
+  }
+
+  function transformFilePx(file) {
+    const reader = new FileReader();
+
+    if (file) {
+      reader.readAsDataURL(file);
+      reader.onloadend = () => {
+        setpxpicprev(reader.result);
+      };
+    } else {
+      setpxpicprev("");
+    }
+  }
+  // Upload to cloudinary pxpic
+  function handleImgUploadtoCloudPx() {
+    const formData = new FormData();
+    formData.append("file", pxPic);
+    formData.append("upload_preset", "xblijdel");
+    formData.append("cloud_name", "duxhh9oxy");
+
+    return fetch("https://api.cloudinary.com/v1_1/duxhh9oxy/image/upload", {
+      method: "post",
+      body: formData,
+    })
+      .then((resp) => resp.json())
+      .then((data) => {
+        return data.url;
+      })
+      .catch((err) => console.log(err));
+  }
+  // adding PxPic
+  async function addPxpic() {
+    setUploadpxPf(false);
+    const url = await handleImgUploadtoCloudPx();
+
+    const pxpic = {
+      pfpowner: id,
+      profpicUrl: url,
+    };
+    pxpiccontext.addPxpic(pxpic);
+  }
+  // Edit PxPic
+  async function editPxpic() {
+    setUploadpxPf(false);
+    const url = await handleImgUploadtoCloudPx();
+    const pxpic = {
+      _id: selectedProfile[0]._id,
+      pfpowner: id,
+      profpicUrl: url,
+    };
+    pxpiccontext.editPxpic(pxpic);
+  }
   // Schemas
   // Treatment record Error handling
   const trSchema = Joi.object({
@@ -799,11 +875,56 @@ const Patient = (props) => {
         <div className="bg-[#5552d3] rounded-2xl w-full py-2   ">
           <div className="flex items-center justify-evenly h-full px-2">
             <div className="flex items-center h-full">
-              <img
-                className="w-[60px] h-[60px] rounded-full"
-                src={avatar}
-                alt=""
-              />
+              {pxpicprev ? (
+                <img
+                  className="w-[65px] h-[65px] rounded-full m-auto cursor-pointer"
+                  src={pxpicprev}
+                  alt=""
+                  onClick={uploadPicPopup}
+                />
+              ) : (
+                <img
+                  className="w-[65px] h-[65px] rounded-full m-auto cursor-pointer"
+                  src={
+                    selectedProfile[0] ? selectedProfile[0].profpicUrl : avatar
+                  }
+                  alt=""
+                  onClick={uploadPicPopup}
+                />
+              )}
+              {uploadpxpf ? (
+                <div className="absolute bg-slate-100 w-[270px] h-[80px] rounded-2xl top-32 z-20 left-4">
+                  <div className="bg-slate-50 rounded-xl h-[90px]">
+                    <div className="flex justify-end pt-1 px-1">
+                      <AiOutlineClose
+                        className="cursor-pointer"
+                        fill="red"
+                        onClick={closeuploadPicPopup}
+                      />
+                    </div>
+                    <div className="flex justify-center">
+                      <input
+                        className="mt-2 pl-3"
+                        type="file"
+                        accept="image/"
+                        onChange={(e) => handleImageUploadPx(e)}
+                      />
+                    </div>
+
+                    <div className="flex justify-center pt-2">
+                      <button
+                        className="bg-black text-white px-5 rounded-full font-medium text-sm"
+                        onClick={selectedProfile[0] ? editPxpic : addPxpic}
+                      >
+                        Upload
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div></div>
+              )}
+
               <div>
                 <div>
                   <div className="text-lg text-white w-[220px] font-semibold px-2">
@@ -1774,11 +1895,56 @@ const Patient = (props) => {
         <div className="bg-[#5552d3] rounded-2xl col-span-2 mt-2   ">
           <div className="flex items-center justify-between h-full px-2">
             <div className="flex items-center h-full">
-              <img
-                className="lg:w-[60px] lg:h-[60px] md:w-[50px] md:h-[50px] rounded-full"
-                src={avatar}
-                alt=""
-              />
+              {pxpicprev ? (
+                <img
+                  className="w-[65px] h-[65px] rounded-full m-auto cursor-pointer"
+                  src={pxpicprev}
+                  alt=""
+                  onClick={uploadPicPopup}
+                />
+              ) : (
+                <img
+                  className="w-[65px] h-[65px] rounded-full m-auto cursor-pointer"
+                  src={
+                    selectedProfile[0] ? selectedProfile[0].profpicUrl : avatar
+                  }
+                  alt=""
+                  onClick={uploadPicPopup}
+                />
+              )}
+              {uploadpxpf ? (
+                <div className="absolute bg-slate-100 w-[270px] h-[80px] rounded-2xl top-24 z-20 left-60">
+                  <div className="bg-slate-50 rounded-xl h-[90px]">
+                    <div className="flex justify-end pt-1 px-1">
+                      <AiOutlineClose
+                        className="cursor-pointer"
+                        fill="red"
+                        onClick={closeuploadPicPopup}
+                      />
+                    </div>
+                    <div className="flex justify-center">
+                      <input
+                        className="mt-2 pl-3"
+                        type="file"
+                        accept="image/"
+                        onChange={(e) => handleImageUploadPx(e)}
+                      />
+                    </div>
+
+                    <div className="flex justify-center pt-2">
+                      <button
+                        className="bg-black text-white px-5 rounded-full font-medium text-sm"
+                        onClick={selectedProfile[0] ? editPxpic : addPxpic}
+                      >
+                        Upload
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div></div>
+              )}
+
               <div>
                 <div>
                   <div className="lg:text-lg md:text-base text-white font-semibold px-2">
@@ -2761,6 +2927,14 @@ const Patient = (props) => {
           </div>
         </div>
       </div>
+      {/* Blocking Other Buttons when uploading image pop up is open */}
+      <div
+        className={
+          !uploadpxpf
+            ? "w-screen h-screen bg-slate-300 opacity-80 absolute top-0 hidden"
+            : "w-full h-full bg-slate-300 opacity-0 absolute top-0 z-10"
+        }
+      ></div>
     </div>
   ) : (
     <div></div>

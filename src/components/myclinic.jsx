@@ -606,7 +606,7 @@ const MyClinic = () => {
       {/* Large Screen */}
       <div className="w-full hidden md:flex">
         {/* Clinic Info */}
-        <div className="text-gray-100 bg-[#1993c6] max-w-[270px] min-w-[240px] max-h-[700px] h-full pt-2 px-4 ">
+        <div className="text-gray-100 bg-[#1993c6] max-w-[270px] min-w-[240px] pb-12 h-full pt-2 px-4 ">
           <AiOutlineEdit
             className="ml-48 -translate-y-1 hover:cursor-pointer"
             size={20}
