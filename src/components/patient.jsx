@@ -455,15 +455,25 @@ const Patient = (props) => {
   }
 
   function choosenDentist(dentist) {
-    let parseddentist = JSON.parse(dentist);
-    setTRData((prev) => {
-      return { ...prev, handledby: parseddentist };
-    });
-    setDentistList(false);
-    if (addoredit === "add") {
-      setaddData(true);
+    if (!dentist) {
+      setDentistList(false);
+      if (addoredit === "add") {
+        setaddData(true);
+      } else {
+        setViewDets(true);
+      }
     } else {
-      setViewDets(true);
+      let parseddentist = JSON.parse(dentist);
+
+      setTRData((prev) => {
+        return { ...prev, handledby: parseddentist };
+      });
+      setDentistList(false);
+      if (addoredit === "add") {
+        setaddData(true);
+      } else {
+        setViewDets(true);
+      }
     }
   }
 
@@ -482,15 +492,24 @@ const Patient = (props) => {
     }
   }
   function choosenProcedure(proc) {
-    let parsedprocedure = JSON.parse(proc);
-    setTRData((prev) => {
-      return { ...prev, procedure: parsedprocedure };
-    });
-    setProcedureList(false);
-    if (addoredit === "add") {
-      setaddData(true);
+    if (!proc) {
+      setProcedureList(false);
+      if (addoredit === "add") {
+        setaddData(true);
+      } else {
+        setViewDets(true);
+      }
     } else {
-      setViewDets(true);
+      let parsedprocedure = JSON.parse(proc);
+      setTRData((prev) => {
+        return { ...prev, procedure: parsedprocedure };
+      });
+      setProcedureList(false);
+      if (addoredit === "add") {
+        setaddData(true);
+      } else {
+        setViewDets(true);
+      }
     }
   }
   // Tr Data onChange

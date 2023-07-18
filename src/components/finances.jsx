@@ -368,13 +368,17 @@ const Finances = () => {
   }
 
   function choosenDentist(dentist) {
-    let parseddentist = JSON.parse(dentist);
-    setSalaryData((prev) => {
-      return { ...prev, dentist: parseddentist };
-    });
-    setdentistpopup(!dentistspopup);
-    setViewExp(true);
-    setAddExpenses(!addexpenses);
+    if (!dentist) {
+      choosedentist();
+    } else {
+      let parseddentist = JSON.parse(dentist);
+      setSalaryData((prev) => {
+        return { ...prev, dentist: parseddentist };
+      });
+      setdentistpopup(!dentistspopup);
+      setViewExp(true);
+      setAddExpenses(!addexpenses);
+    }
   }
 
   function handlesalaryChange(e) {

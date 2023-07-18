@@ -504,15 +504,24 @@ export default function Appointments(props) {
     }
   }
   function choosenDentist(dentist) {
-    let parseddentist = JSON.parse(dentist);
-    setAppoinmentData((prev) => {
-      return { ...prev, dentistOD: parseddentist };
-    });
-    setDentistList(!dentistList);
-    if (selectedPopup === "add") {
-      setAddPopup(true);
+    if (!dentist) {
+      setDentistList(false);
+      if (selectedPopup === "add") {
+        setAddPopup(true);
+      } else {
+        setVieworEdit(true);
+      }
     } else {
-      setVieworEdit(true);
+      let parseddentist = JSON.parse(dentist);
+      setAppoinmentData((prev) => {
+        return { ...prev, dentistOD: parseddentist };
+      });
+      setDentistList(!dentistList);
+      if (selectedPopup === "add") {
+        setAddPopup(true);
+      } else {
+        setVieworEdit(true);
+      }
     }
   }
   // Procedures List Pop up / Choosing Procedure
@@ -523,15 +532,25 @@ export default function Appointments(props) {
   }
 
   function choosenProcedure(procedure) {
-    let parsedprocedure = JSON.parse(procedure);
-    setAppoinmentData((prev) => {
-      return { ...prev, procedure: parsedprocedure };
-    });
-    setProcedureList(!procedureList);
-    if (selectedPopup === "add") {
-      setAddPopup(true);
+    if (!procedure) {
+      setProcedureList(false);
+
+      if (selectedPopup === "add") {
+        setAddPopup(true);
+      } else {
+        setVieworEdit(true);
+      }
     } else {
-      setVieworEdit(true);
+      let parsedprocedure = JSON.parse(procedure);
+      setAppoinmentData((prev) => {
+        return { ...prev, procedure: parsedprocedure };
+      });
+      setProcedureList(!procedureList);
+      if (selectedPopup === "add") {
+        setAddPopup(true);
+      } else {
+        setVieworEdit(true);
+      }
     }
   }
 
@@ -543,15 +562,24 @@ export default function Appointments(props) {
   }
 
   function choosenPatient(patient) {
-    let parsedpatient = JSON.parse(patient);
-    setAppoinmentData((prev) => {
-      return { ...prev, patient: parsedpatient };
-    });
-    setPxList(!pxList);
-    if (selectedPopup === "add") {
-      setAddPopup(true);
+    if (!patient) {
+      setPxList(false);
+      if (selectedPopup === "add") {
+        setAddPopup(true);
+      } else {
+        setVieworEdit(true);
+      }
     } else {
-      setVieworEdit(true);
+      let parsedpatient = JSON.parse(patient);
+      setAppoinmentData((prev) => {
+        return { ...prev, patient: parsedpatient };
+      });
+      setPxList(!pxList);
+      if (selectedPopup === "add") {
+        setAddPopup(true);
+      } else {
+        setVieworEdit(true);
+      }
     }
   }
   // Deleting  Appointment
