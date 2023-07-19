@@ -167,6 +167,7 @@ const Patient = (props) => {
   }, []);
   // Sorting
   let sortedTr = _.orderBy(selectedTreatments, "date", "desc");
+  console.log(selectedTreatments);
   // Pagination
   let pagpxs = paginate(sortedTr, currentPage, pageSize);
 

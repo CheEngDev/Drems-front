@@ -37,7 +37,16 @@ const DashSidebar = () => {
   // Get profpic
   async function getProfPic() {
     const result = await profpicService.getProfpic();
-    setProcPicData(result.data[0]);
+    console.log(result);
+    if (result.data.length > 0) {
+      setProcPicData(result.data[0]);
+    } else {
+      setProcPicData({
+        _id: "",
+        pfpowner: "",
+        profpicUrl: "",
+      });
+    }
   }
   // Post/Add Prof Pic
   async function addProfPic() {
@@ -166,7 +175,7 @@ const DashSidebar = () => {
           ) : (
             <img
               className="w-[65px] h-[65px] rounded-full m-auto cursor-pointer"
-              src={profPicData.profpicUrl ? profPicData.profpicUrl : avatar}
+              src={!profPicData.profpicUrl ? avatar : profPicData.profpicUrl}
               alt=""
               onClick={handleProfPopup}
             />
@@ -266,7 +275,9 @@ const DashSidebar = () => {
           ) : (
             <img
               className="w-[60px] h-[60px] rounded-xl m-auto cursor-pointer"
-              src={profPicData.profpicUrl ? profPicData.profpicUrl : avatar}
+              src={
+                profPicData.profpicUrl === "" ? avatar : profPicData.profpicUrl
+              }
               alt=""
               onClick={handleProfPopup}
             />
