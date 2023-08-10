@@ -185,7 +185,7 @@ const Patients = () => {
     }
   }
 
-  function handleSort(path) {s
+  function handleSort(path) {
     if (sortColumn.path === path) {
       if (sortColumn.order === "asc") {
         setSort({ path: path, order: "desc" });
