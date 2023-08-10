@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/static/css/main.0e3bd7c5.css",
+    "main.js": "/static/js/main.396ed87b.js",
+    "static/media/stats.png": "/static/media/stats.415651f6d0913ec4d1e2.png",
+    "static/media/hero.png": "/static/media/hero.481b9fd09882415fb217.png",
+    "static/media/loginimg.png": "/static/media/loginimg.4a9eeeaea768b1866673.png",
+    "static/media/dentalChart.png": "/static/media/dentalChart.6ec23b7a04e6046e06fe.png",
+    "static/media/coloredshapes.png": "/static/media/coloredshapes.1cba02665b7d618e01e9.png",
+    "static/media/avatar.png": "/static/media/avatar.a26d95c06e636eccd912.png",
+    "static/media/dremslogob.png": "/static/media/dremslogob.fd2484cfa8adf8f63cfd.png",
+    "static/media/dremslogo.png": "/static/media/dremslogo.83eada5893717639230e.png",
+    "static/media/loginwavesbg.png": "/static/media/loginwavesbg.80e09b6388671ed53298.png",
+    "index.html": "/index.html",
+    "main.0e3bd7c5.css.map": "/static/css/main.0e3bd7c5.css.map",
+    "main.396ed87b.js.map": "/static/js/main.396ed87b.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.0e3bd7c5.css",
+    "static/js/main.396ed87b.js"
+  ]
+}
