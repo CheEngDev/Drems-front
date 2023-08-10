@@ -30,7 +30,7 @@ const Login = () => {
     e.preventDefault();
     const errors = validate();
     setErrors(errors || {});
-    console.log(errors);
+
     if (errors) {
       setTimeout(() => setErrors({}), 2000);
       return;

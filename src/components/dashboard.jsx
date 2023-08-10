@@ -148,12 +148,14 @@ const Dashboard = (props) => {
               <p>
                 Today :
                 <span className=" inline-block px-1 underline text-base ">
-                  Php 10,000
+                  {computerevenuetoday()}
                 </span>
               </p>
             </div>
             <div className="bg-black rounded-b-lg font-normal">
-              <p className="p-1 text-sm text-white">Weekly Revenue:</p>
+              <p className="p-1 text-sm text-white">
+                Weekly: {computerevenueweek()}
+              </p>
             </div>
           </div>
           <div className="max-w-[170px] min-w-[150px] w-full bg-white rounded-lg font-medium mx-1">
@@ -167,7 +169,9 @@ const Dashboard = (props) => {
               </p>
             </div>
             <div className="bg-black rounded-b-lg font-normal">
-              <p className="p-1 text-sm text-white">Weekly added:</p>
+              <p className="p-1 text-sm text-white">
+                Weekly added: {addedComp.length}
+              </p>
             </div>
           </div>
         </div>
