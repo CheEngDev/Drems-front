@@ -289,6 +289,11 @@ const Register = (props) => {
                     value={userData.username}
                     onChange={handleChange}
                   />
+                  {errors.username && (
+                    <div className="text-red-600 text-sm border-2 w-[401px] absolute -translate-y-1 bg-white">
+                      {errors.username}
+                    </div>
+                  )}
                 </div>
 
                 <div className="w-full py-1">
@@ -300,6 +305,11 @@ const Register = (props) => {
                     value={userData.password}
                     onChange={handleChange}
                   />
+                  {errors.password && (
+                    <div className="text-red-600 text-sm border-2 w-[401px] absolute -translate-y-1 bg-white">
+                      {errors.password}
+                    </div>
+                  )}
                 </div>
                 <div className="w-full py-1">
                   <input
@@ -310,6 +320,11 @@ const Register = (props) => {
                     value={userData.firstName}
                     onChange={handleChange}
                   />
+                  {errors.firstName && (
+                    <div className="text-red-600 text-sm border-2 w-[401px] absolute -translate-y-1 bg-white">
+                      {errors.firstName}
+                    </div>
+                  )}
                 </div>
                 <div className="w-full py-1">
                   <input
@@ -320,6 +335,11 @@ const Register = (props) => {
                     value={userData.lastName}
                     onChange={handleChange}
                   />
+                  {errors.lastName && (
+                    <div className="text-red-600 text-sm border-2 w-[401px] absolute -translate-y-1 bg-white">
+                      {errors.lastName}
+                    </div>
+                  )}
                 </div>
                 <div className="py-1">
                   <select
