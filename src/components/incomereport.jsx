@@ -16,12 +16,16 @@ const IncomeReport = (props) => {
   const currentYear = moment().year();
   const currentDay = moment().date();
 
-  const pxidswhopaid = [...new Set(sortedpayments.map((item) => item.pxid))];
+  const pxidswhopaid = [
+    ...new Set(sortedpayments.map((item) => item.treatment.patient)),
+  ];
+
   const pxswhopaid = [];
   for (const id of pxidswhopaid) {
-    const px = pxs.filter((px) => px.id === id);
+    const px = pxs.filter((px) => px._id === id);
     pxswhopaid.push(...px);
   }
+  console.log(pxswhopaid);
   // Filtering by date
   const Month = payments.filter((pay) => {
     let [year, month] = pay.date.split("-");

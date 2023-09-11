@@ -272,6 +272,7 @@ const Patient = (props) => {
     setSelectedTr(true);
     setSelectedMedHis(false);
   }
+
   // For Med His of Patient
   //Handle Uploading an Image / Preview Image
   function handleImageUpload(e) {

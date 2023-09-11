@@ -81,7 +81,7 @@ const OtherExpenses = (props) => {
         ))}
       </div>
       <div className="flex justify-center text-lg">
-        <h2 className="font-semibold">Total Revenue</h2>
+        <h2 className="font-semibold">Total Other Expense</h2>
         <p className="mx-2">{formatter.format(computeTotalOtherExpenses())}</p>
       </div>
     </div>

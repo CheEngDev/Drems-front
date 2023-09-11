@@ -37,10 +37,10 @@ const SalaryReport = (props) => {
   };
 
   let filteredSalary = salary[props.dateFilter];
-
+  console.log(filteredSalary);
   function computeSalary(id) {
     const salaryAssoc = filteredSalary.filter(
-      (salary) => salary.dentist.id === id
+      (salary) => salary.dentist._id === id
     );
     let salaryofdent = 0;
     for (let i = 0; i < salaryAssoc.length; i++) {
@@ -62,7 +62,7 @@ const SalaryReport = (props) => {
     style: "currency",
     currency: "Php",
   });
-
+  console.log(associates);
   return (
     <div>
       <div className="max-h-[330px] overflow-y-auto">
@@ -83,7 +83,7 @@ const SalaryReport = (props) => {
                 {assoc._id === assoc.dentist ? (
                   <p>Clinic Owner</p>
                 ) : (
-                  <p>{formatter.format(computeSalary(assoc.id))}</p>
+                  <p>{formatter.format(computeSalary(assoc._id))}</p>
                 )}
               </div>
             </div>
@@ -91,7 +91,7 @@ const SalaryReport = (props) => {
         ))}
       </div>
       <div className="flex justify-center text-lg">
-        <h2 className="font-semibold">Total Revenue</h2>
+        <h2 className="font-semibold">Total Salaries</h2>
         <p className="mx-2">{formatter.format(computeTotalSalary())}</p>
       </div>
     </div>
