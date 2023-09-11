@@ -25,7 +25,7 @@ const PatientList = (props) => {
                 onChange={(e) => setSelectedPx(e.currentTarget.value)}
               />
               <label htmlFor="procedures" className="ml-2 text-sm font-medium ">
-                {px.firstName}, {px.lastName}
+                {px.lastName}, {px.firstName}
               </label>
             </div>
           ))}

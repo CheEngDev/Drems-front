@@ -95,7 +95,9 @@ const Insurances = () => {
   }
 
   function nextPage() {
-    if (currentPage === Math.ceil(companies.length / 5 - 1)) {
+    if (companies.length === 0) {
+      setPage(0);
+    } else if (currentPage === Math.ceil(companies.length / 5 - 1)) {
       setPage(0);
     } else {
       setPage(currentPage + 1);
@@ -146,8 +148,6 @@ const Insurances = () => {
     if (errors) return;
 
     companyContext.addHmo(data);
-    // companies.push(addedCompany);
-
     setCompPopup(!newCompPopup);
   }
 

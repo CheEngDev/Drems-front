@@ -13,7 +13,6 @@ const MyClinic = () => {
   const userContext = useContext(UserContext);
   const user = userContext.user;
   const assocDentcontext = useContext(assocDentContext);
-  console.log(assocDentcontext);
   // Pop ups
   const [editInfo, setEditInfo] = useState(false);
   const [editMyDets, setEditMyDets] = useState(false);
@@ -29,6 +28,7 @@ const MyClinic = () => {
     address: "",
     number: "",
     picUrl: "",
+    username: "",
   });
   const [assocData, setAssocData] = useState({
     _id: "",
@@ -63,6 +63,7 @@ const MyClinic = () => {
       address: user.address,
       number: user.number,
       picUrl: user.picUrl,
+      username: user.username,
     });
     setAssocData({
       _id: "",
@@ -105,10 +106,11 @@ const MyClinic = () => {
     e.preventDefault();
     const errors = validate();
     setuserError(errors || {});
-    console.log(userErrors);
+
     if (errors) return;
 
     userContext.editUser(userData);
+    console.log(userData);
     setEditInfo(!editInfo);
   }
 
@@ -178,7 +180,6 @@ const MyClinic = () => {
   function handleAddAssoc(e) {
     e.preventDefault();
     const errors = validateAddAssoc();
-    console.log(errors);
     setAddErrors(errors || {});
     if (errors) return;
 
@@ -805,11 +806,14 @@ const MyClinic = () => {
                     name="assoc"
                     className="border-2 outline-none rounded-xl w-full pl-1"
                   >
-                    <option value=""></option>
                     {assocDentcontext.associate.map((assoc) => (
                       <option
-                        value={assoc._id}
-                      >{`${assoc.lastName}, ${assoc.firstName}`}</option>
+                        value={assoc._id === assoc.dentist ? "" : assoc._id}
+                      >
+                        {assoc._id === assoc.dentist
+                          ? ""
+                          : `${assoc.lastName}, ${assoc.firstName}`}
+                      </option>
                     ))}
                   </select>
                 </div>

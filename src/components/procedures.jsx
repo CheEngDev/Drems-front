@@ -46,7 +46,9 @@ const Procedures = () => {
   }
 
   function nextPage() {
-    if (currentPage === Math.ceil(procedures.length / 6 - 1)) {
+    if (procedures.length === 0) {
+      setPage(0);
+    } else if (currentPage === Math.ceil(procedures.length / 6 - 1)) {
       setPage(0);
     } else {
       setPage(currentPage + 1);

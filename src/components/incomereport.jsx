@@ -140,7 +140,7 @@ const IncomeReport = (props) => {
               <p className="pt-2 text-gray-500">
                 Total Payments <br />
                 <span className="text-black">
-                  {formatter.format(computerevenue(px.id))}
+                  {formatter.format(computerevenue(px._id))}
                 </span>
               </p>
             </div>

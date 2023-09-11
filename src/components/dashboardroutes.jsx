@@ -61,7 +61,6 @@ const Dashboardroutes = () => {
 
   async function editUser(currentuser) {
     setUser(currentuser);
-
     const result = await userService.editUserInfo(currentuser);
   }
 
@@ -208,7 +207,6 @@ const Dashboardroutes = () => {
       dentist: procedure.dentist,
     };
     setProcedures(procedures2);
-
     const result = await procedureService.editProcedure(procedure);
   }
 

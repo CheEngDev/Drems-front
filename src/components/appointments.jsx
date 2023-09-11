@@ -37,122 +37,6 @@ export default function Appointments(props) {
   const [today, setToday] = useState(currentDate);
   const [selectDate, setSelectDate] = useState(currentDate);
 
-  // Scheduled
-  // const [appointment, setAppointments] = useState([
-  //   {
-  //     id: "1",
-  //     patient: {
-  //       id: "1",
-  //       firstName: "Joyce",
-  //       lastName: "Almendarez",
-  //       img: avatar,
-  //     },
-  //     date: "2023-06-05",
-  //     startTime: "1:00PM",
-  //     dentistOD: { id: "1", firstName: "Remelyn", lastName: "Rinon" },
-  //     procedure: { id: "1", name: "Tooth Filling" },
-  //   },
-  //   {
-  //     id: "2",
-  //     patient: {
-  //       id: "3",
-  //       firstName: "Alexandria",
-  //       lastName: "Simon",
-  //       img: avatar,
-  //     },
-  //     date: "2023-06-05",
-  //     startTime: "2:00PM",
-  //     dentistOD: { id: "1", firstName: "Remelyn", lastName: "Rinon" },
-  //     procedure: { id: "1", name: "Tooth Filling" },
-  //   },
-  //   {
-  //     id: "3",
-  //     patient: { id: "2", firstName: "Verity", lastName: "Garza", img: avatar },
-  //     date: "2023-06-11",
-  //     startTime: "10:00AM",
-  //     dentistOD: { id: "1", firstName: "Remelyn", lastName: "Rinon" },
-  //     procedure: { id: "1", name: "Tooth Filling" },
-  //   },
-  //   {
-  //     id: "4",
-  //     patient: {
-  //       id: "1",
-  //       firstName: "Joyce",
-  //       lastName: "Almendarez",
-  //       img: avatar,
-  //     },
-  //     date: "2023-06-21",
-  //     startTime: "10:00AM",
-  //     dentistOD: { id: "1", firstName: "Remelyn", lastName: "Rinon" },
-  //     procedure: { id: "1", name: "Tooth Filling" },
-  //   },
-  //   {
-  //     id: "5",
-  //     patient: { id: "4", firstName: "Bruno", lastName: "Graves", img: avatar },
-  //     date: "2023-06-14",
-  //     startTime: "10:00AM",
-  //     dentistOD: { id: "1", firstName: "Remelyn", lastName: "Rinon" },
-  //     procedure: { id: "1", name: "Tooth Filling" },
-  //   },
-  //   {
-  //     id: "6",
-  //     patient: {
-  //       id: "1",
-  //       firstName: "Joyce",
-  //       lastName: "Almendarez",
-  //       img: avatar,
-  //     },
-  //     date: "2023-06-06",
-  //     startTime: "5:00PM",
-  //     dentistOD: { id: "1", firstName: "Remelyn", lastName: "Rinon" },
-  //     procedure: { id: "1", name: "Tooth Filling" },
-  //   },
-  //   {
-  //     id: "7",
-  //     patient: {
-  //       id: "1",
-  //       firstName: "Joyce",
-  //       lastName: "Almendarez",
-  //       img: avatar,
-  //     },
-  //     date: "2023-07-01",
-  //     startTime: "10:00AM",
-  //     dentistOD: { id: "1", firstName: "Remelyn", lastName: "Rinon" },
-  //     procedure: { id: "1", name: "Tooth Filling" },
-  //   },
-  //   {
-  //     id: "8",
-  //     patient: { id: "2", firstName: "Verity", lastName: "Garza", img: avatar },
-  //     date: "2023-07-05",
-  //     startTime: "11:00AM",
-  //     dentistOD: { id: "1", firstName: "Remelyn", lastName: "Rinon" },
-  //     procedure: { id: "1", name: "Tooth Filling" },
-  //   },
-  //   {
-  //     id: "9",
-  //     patient: { id: "2", firstName: "Verity", lastName: "Garza", img: avatar },
-  //     date: "2023-06-05",
-  //     startTime: "10:00AM",
-  //     dentistOD: { id: "1", firstName: "Remelyn", lastName: "Rinon" },
-  //     procedure: { id: "1", name: "Tooth Filling" },
-  //   },
-  //   {
-  //     id: "10",
-  //     patient: { id: "2", firstName: "Verity", lastName: "Garza", img: avatar },
-  //     date: "2023-06-05",
-  //     startTime: "10:00AM",
-  //     dentistOD: { id: "1", firstName: "Remelyn", lastName: "Rinon" },
-  //     procedure: { id: "1", name: "Tooth Filling" },
-  //   },
-  //   {
-  //     id: "11",
-  //     patient: { id: "2", firstName: "Verity", lastName: "Garza", img: avatar },
-  //     date: "2023-06-05",
-  //     startTime: "3:00PM",
-  //     dentistOD: { id: "1", firstName: "Remelyn", lastName: "Rinon" },
-  //     procedure: { id: "1", name: "Tooth Filling" },
-  //   },
-  // ]);
   const [scheduled, setScheduled] = useState([]);
   const [appointmentData, setAppoinmentData] = useState({
     _id: "",
@@ -430,6 +314,7 @@ export default function Appointments(props) {
     appoint.procedure = appointmentData.procedure._id;
     const result = await appointContext.addAppointment(appoint);
     console.log(result);
+
     if (appoint.date === dayjs().format("YYYY/MM/DD")) {
       setScheduled((oldArray) => [...oldArray, result[0]]);
     }
@@ -642,11 +527,11 @@ export default function Appointments(props) {
   }
 
   return (
-    <div className="flex gap-3 sm:divide-x justify-center sm:w-1/2 mx-auto  h-screen items-center sm:flex-row flex-col pt-20 md:pt-0">
+    <div className="flex gap-3 sm:divide-x justify-center md:w-1/2 mx-auto  h-screen items-center sm:flex-row flex-col pt-20 md:pt-0">
       <div className=" md:w-96 md:h-96 w-72 h-72">
         <div className="flex justify-between items-center">
           <h1 className="select-none font-semibold">
-            {months[today.month()]}, {today.year()}
+            {months[today.month()]} {today.year()}
           </h1>
           <div className="flex items-center  lg:gap-5">
             <GrFormPrevious
@@ -753,14 +638,14 @@ export default function Appointments(props) {
                           {px.patient.firstName}
                         </p>
                       </div>
-                      <div className="flex items-center ">
+                      <div className="flex items-center relative">
                         <BsThreeDotsVertical
                           className="cursor-pointer"
                           size={20}
                           onClick={() => viewDetsPopup(px)}
                         />
                         {viewdetsPopup._id === px._id ? (
-                          <div className="bg-gray-200  -translate-x-5 -translate-y-2 md:-translate-x-10 md:translate-y-2 lg:-translate-x-5 lg:-translate-y-2 rounded-xl">
+                          <div className="bg-gray-200 absolute -translate-x-20 -translate-y-2 md:-translate-x-20 md:translate-y-2 lg:-translate-x-20 lg:-translate-y-1 rounded-xl cursor-pointer">
                             <div
                               className="hover:bg-gray-100 p-1 rounded-t-xl cursor-pointer"
                               onClick={() => handleViewPopup(px)}
@@ -806,14 +691,14 @@ export default function Appointments(props) {
                         </p>
                       </div>
 
-                      <div className="flex items-center">
+                      <div className="flex items-center relative">
                         <BsThreeDotsVertical
                           className="cursor-pointer"
                           size={20}
                           onClick={() => viewDetsPopup(px)}
                         />
                         {viewdetsPopup._id === px._id ? (
-                          <div className="bg-gray-200  -translate-x-5 -translate-y-2 md:-translate-x-10 md:translate-y-2 lg:-translate-x-5 lg:-translate-y-2 rounded-xl">
+                          <div className="bg-gray-200 absolute -translate-x-20 -translate-y-2 md:-translate-x-20 md:translate-y-2 lg:-translate-x-20 lg:-translate-y-1 rounded-xl cursor-pointer">
                             <div
                               className="hover:bg-gray-100 p-1 rounded-t-xl cursor-pointer"
                               onClick={() => handleViewPopup(px)}
@@ -859,14 +744,14 @@ export default function Appointments(props) {
                         </p>
                       </div>
 
-                      <div className="flex items-center">
+                      <div className="flex items-center relative">
                         <BsThreeDotsVertical
                           className="cursor-pointer"
                           size={20}
                           onClick={() => viewDetsPopup(px)}
                         />
                         {viewdetsPopup._id === px._id ? (
-                          <div className="bg-gray-200 -translate-x-5 -translate-y-2 md:-translate-x-10 md:translate-y-2 lg:-translate-x-5 lg:-translate-y-2 rounded-xl">
+                          <div className="bg-gray-200 absolute -translate-x-20 -translate-y-2 md:-translate-x-20 md:translate-y-2 lg:-translate-x-20 lg:-translate-y-1 rounded-xl cursor-pointer">
                             <div
                               className="hover:bg-gray-100 p-1 rounded-t-xl cursor-pointer"
                               onClick={() => handleViewPopup(px)}
@@ -912,14 +797,14 @@ export default function Appointments(props) {
                         </p>
                       </div>
 
-                      <div className="flex items-center">
+                      <div className="flex items-center relative">
                         <BsThreeDotsVertical
                           className="cursor-pointer"
                           size={20}
                           onClick={() => viewDetsPopup(px)}
                         />
                         {viewdetsPopup._id === px._id ? (
-                          <div className="bg-gray-200 -translate-x-5 -translate-y-2 md:-translate-x-10 md:translate-y-2 lg:-translate-x-5 lg:-translate-y-2 rounded-xl">
+                          <div className="bg-gray-200 absolute -translate-x-20 -translate-y-2 md:-translate-x-20 md:translate-y-2 lg:-translate-x-20 lg:-translate-y-1 rounded-xl cursor-pointer">
                             <div
                               className="hover:bg-gray-100 p-1 rounded-t-xl cursor-pointer"
                               onClick={() => handleViewPopup(px)}
@@ -965,14 +850,14 @@ export default function Appointments(props) {
                         </p>
                       </div>
 
-                      <div className="flex items-center">
+                      <div className="flex items-center relative">
                         <BsThreeDotsVertical
                           className="cursor-pointer"
                           size={20}
                           onClick={() => viewDetsPopup(px)}
                         />
                         {viewdetsPopup._id === px._id ? (
-                          <div className="bg-gray-200 -translate-x-5 -translate-y-2 md:-translate-x-10 md:translate-y-2 lg:-translate-x-5 lg:-translate-y-2 rounded-xl">
+                          <div className="bg-gray-200 absolute -translate-x-20 -translate-y-2 md:-translate-x-20 md:translate-y-2 lg:-translate-x-20 lg:-translate-y-1 rounded-xl cursor-pointer">
                             <div
                               className="hover:bg-gray-100 p-1 rounded-t-xl cursor-pointer"
                               onClick={() => handleViewPopup(px)}
@@ -1018,14 +903,14 @@ export default function Appointments(props) {
                         </p>
                       </div>
 
-                      <div className="flex items-center">
+                      <div className="flex items-center relative">
                         <BsThreeDotsVertical
                           className="cursor-pointer"
                           size={20}
                           onClick={() => viewDetsPopup(px)}
                         />
                         {viewdetsPopup._id === px._id ? (
-                          <div className="bg-gray-200 -translate-x-5 -translate-y-2 md:-translate-x-10 md:translate-y-2 lg:-translate-x-5 lg:-translate-y-2 rounded-xl">
+                          <div className="bg-gray-200 absolute -translate-x-20 -translate-y-2 md:-translate-x-20 md:translate-y-2 lg:-translate-x-20 lg:-translate-y-1 rounded-xl cursor-pointer">
                             <div
                               className="hover:bg-gray-100 p-1 rounded-t-xl cursor-pointer"
                               onClick={() => handleViewPopup(px)}
@@ -1071,14 +956,14 @@ export default function Appointments(props) {
                         </p>
                       </div>
 
-                      <div className="flex items-center">
+                      <div className="flex items-center relative">
                         <BsThreeDotsVertical
                           className="cursor-pointer"
                           size={20}
                           onClick={() => viewDetsPopup(px)}
                         />
                         {viewdetsPopup._id === px._id ? (
-                          <div className="bg-gray-200 -translate-x-5 -translate-y-2 md:-translate-x-10 md:translate-y-2 lg:-translate-x-5 lg:-translate-y-2 rounded-xl">
+                          <div className="bg-gray-200 absolute -translate-x-20 -translate-y-2 md:-translate-x-20 md:translate-y-2 lg:-translate-x-20 lg:-translate-y-1 rounded-xl cursor-pointer">
                             <div
                               className="hover:bg-gray-100 p-1 rounded-t-xl cursor-pointer"
                               onClick={() => handleViewPopup(px)}
@@ -1124,14 +1009,14 @@ export default function Appointments(props) {
                         </p>
                       </div>
 
-                      <div className="flex items-center">
+                      <div className="flex items-center relative">
                         <BsThreeDotsVertical
                           className="cursor-pointer"
                           size={20}
                           onClick={() => viewDetsPopup(px)}
                         />
                         {viewdetsPopup._id === px._id ? (
-                          <div className="bg-gray-200 -translate-x-5 -translate-y-2 md:-translate-x-10 md:translate-y-2 lg:-translate-x-5 lg:-translate-y-2 rounded-xl cursor-pointer">
+                          <div className="bg-gray-200 absolute -translate-x-20 -translate-y-2 md:-translate-x-20 md:translate-y-2 lg:-translate-x-20 lg:-translate-y-1 rounded-xl cursor-pointer">
                             <div
                               className="hover:bg-gray-100 p-1 rounded-t-xl"
                               onClick={() => handleViewPopup(px)}
@@ -1177,14 +1062,14 @@ export default function Appointments(props) {
                         </p>
                       </div>
 
-                      <div className="flex items-center">
+                      <div className="flex items-center relative">
                         <BsThreeDotsVertical
                           className="cursor-pointer"
                           size={20}
                           onClick={() => viewDetsPopup(px)}
                         />
                         {viewdetsPopup._id === px._id ? (
-                          <div className="bg-gray-200 -translate-x-5 -translate-y-2 md:-translate-x-10 md:translate-y-2 lg:-translate-x-5 lg:-translate-y-2 rounded-xl">
+                          <div className="bg-gray-200 absolute -translate-x-20 -translate-y-2 md:-translate-x-20 md:translate-y-2 lg:-translate-x-20 lg:-translate-y-1 rounded-xl cursor-pointer">
                             <div
                               className="hover:bg-gray-100 p-1 rounded-t-xl cursor-pointer"
                               onClick={() => handleViewPopup(px)}

@@ -9,6 +9,7 @@ const Input = (props) => {
           <span className="text-red-600 text-lg font-bold"> * </span>
         )}
       </label>
+
       <input
         className="border-2 outline-none rounded-xl w-full pl-2"
         value={props.value}

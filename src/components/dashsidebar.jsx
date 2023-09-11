@@ -36,8 +36,9 @@ const DashSidebar = () => {
 
   // Get profpic
   async function getProfPic() {
+    // Returns only 1 result since the implementation in backend we have set the req.user
     const result = await profpicService.getProfpic();
-    console.log(result);
+
     if (result.data.length > 0) {
       setProcPicData(result.data[0]);
     } else {
@@ -132,7 +133,7 @@ const DashSidebar = () => {
 
   useEffect(() => {
     getProfPic();
-  });
+  }, []);
 
   return (
     <div className=" md:max-w-[210px] lg:max-w-[240px] md:min-w-[190px] w-full md:h-screen">

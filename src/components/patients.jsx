@@ -178,7 +178,9 @@ const Patients = () => {
   }
 
   function nextPage() {
-    if (currentPage === Math.ceil(pxs.length / 5 - 1)) {
+    if (pxs.length === 0) {
+      setPage(0);
+    } else if (currentPage === Math.ceil(pxs.length / 5 - 1)) {
       setPage(0);
     } else {
       setPage(currentPage + 1);

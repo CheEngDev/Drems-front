@@ -1932,6 +1932,7 @@ const Patient = (props) => {
                   onClick={uploadPicPopup}
                 />
               )}
+              {/* Uploading a prof pic */}
               {uploadpxpf ? (
                 <div className="absolute bg-slate-100 w-[270px] h-[80px] rounded-2xl top-24 z-20 left-60">
                   <div className="bg-slate-50 rounded-xl h-[90px]">
